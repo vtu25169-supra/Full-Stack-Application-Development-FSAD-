@@ -1,0 +1,19 @@
+START TRANSACTION;
+
+-- Deduct only if sufficient balance
+UPDATE Accounts
+SET balance = balance - 2000
+WHERE account_id = 1 AND balance >= 2000;
+
+-- Check if deduction happened
+SELECT ROW_COUNT() INTO @rows;
+
+IF @rows = 0 THEN
+    ROLLBACK;
+ELSE
+    UPDATE Accounts
+    SET balance = balance + 2000
+    WHERE account_id = 2;
+
+    COMMIT;
+END IF;
