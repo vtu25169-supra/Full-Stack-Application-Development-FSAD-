@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback Form</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Hover Effect */
+        input:hover, textarea:hover {
+            border-color: #4CAF50;
+            background-color: #f9fff9;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+
+    <script>
+        // 🔹 Reusable Validation Function
+        function validateName(input) {
+            let regex = /^[A-Za-z ]+$/;
+            if (!regex.test(input.value)) {
+                document.getElementById("nameError").innerText = "Only letters allowed!";
+            } else {
+                document.getElementById("nameError").innerText = "";
+            }
+        }
+
+        function validateEmail(input) {
+            let regex = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (!regex.test(input.value)) {
+                document.getElementById("emailError").innerText = "Invalid email!";
+            } else {
+                document.getElementById("emailError").innerText = "";
+            }
+        }
+
+        // 🔹 Double Click Confirmation
+        function confirmSubmit() {
+            alert("Feedback submitted successfully!");
+        }
+    </script>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Feedback Form</h2>
+
+    <form>
+        <!-- Name -->
+        <input type="text" placeholder="Enter Name"
+               onkeyup="validateName(this)">
+        <div id="nameError" class="error"></div>
+
+        <!-- Email -->
+        <input type="text" placeholder="Enter Email"
+               onkeyup="validateEmail(this)">
+        <div id="emailError" class="error"></div>
+
+        <!-- Feedback -->
+        <textarea placeholder="Enter Feedback"></textarea>
+
+        <!-- Double Click Submit -->
+        <button type="button" ondblclick="confirmSubmit()">
+            Submit (Double Click)
+        </button>
+    </form>
+</div>
+
+</body>
+</html>
