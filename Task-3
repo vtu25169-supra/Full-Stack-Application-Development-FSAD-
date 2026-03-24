@@ -1,0 +1,44 @@
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let username = document.getElementById("username").value.trim();
+    let password = document.getElementById("password").value.trim();
+
+    let userError = document.getElementById("userError");
+    let passError = document.getElementById("passError");
+    let serverMsg = document.getElementById("serverMsg");
+
+    userError.innerText = "";
+    passError.innerText = "";
+    serverMsg.innerText = "";
+
+    let isValid = true;
+
+    if (username === "") {
+        userError.innerText = "Username is required";
+        isValid = false;
+    }
+
+    if (password === "") {
+        passError.innerText = "Password is required";
+        isValid = false;
+    }
+
+    if (!isValid) return;
+
+    // Send data to server
+    fetch("login.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `username=${username}&password=${password}`
+    })
+    .then(res => res.text())
+    .then(data => {
+        serverMsg.innerText = data;
+        if (data === "Login Successful") {
+            window.location.href = "dashboard.html";
+        }
+    });
+});
