@@ -1,0 +1,48 @@
+<?php include 'db.php'; session_start();
+if(!isset($_SESSION['user'])){
+    header("Location: login.php");
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam - Online Exam System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Online Exam</h2>
+        <form action="submit.php" method="post">
+            <?php
+            $res=$conn->query("SELECT * FROM questions");
+            $count = 1;
+            while($row=$res->fetch_assoc()){ 
+            ?>
+            <div class="question-container">
+                <p>Q<?php echo $count; ?>. <?php echo htmlspecialchars($row['question']); ?></p>
+                <div class="option-group">
+                    <input type="radio" id="q<?php echo $row['id']; ?>_a" name="q<?php echo $row['id']; ?>" value="a" required>
+                    <label for="q<?php echo $row['id']; ?>_a"><?php echo htmlspecialchars($row['opt_a']); ?></label>
+                </div>
+                <div class="option-group">
+                    <input type="radio" id="q<?php echo $row['id']; ?>_b" name="q<?php echo $row['id']; ?>" value="b">
+                    <label for="q<?php echo $row['id']; ?>_b"><?php echo htmlspecialchars($row['opt_b']); ?></label>
+                </div>
+                <div class="option-group">
+                    <input type="radio" id="q<?php echo $row['id']; ?>_c" name="q<?php echo $row['id']; ?>" value="c">
+                    <label for="q<?php echo $row['id']; ?>_c"><?php echo htmlspecialchars($row['opt_c']); ?></label>
+                </div>
+                <div class="option-group">
+                    <input type="radio" id="q<?php echo $row['id']; ?>_d" name="q<?php echo $row['id']; ?>" value="d">
+                    <label for="q<?php echo $row['id']; ?>_d"><?php echo htmlspecialchars($row['opt_d']); ?></label>
+                </div>
+            </div>
+            <?php $count++; } ?>
+            <input type="submit" value="Submit Exam">
+        </form>
+    </div>
+</body>
+</html>
