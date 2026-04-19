@@ -1,0 +1,15 @@
+package com.example;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        ProductService productService = new ProductService();
+
+        String name = productService.getProductName();
+        double price = productService.getPrice();
+
+        System.out.println("Product Name: " + name);
+        System.out.println("Product Price: " + price);
+    }
+}
