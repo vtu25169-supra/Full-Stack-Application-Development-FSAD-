@@ -1,0 +1,19 @@
+@RestController
+@RequestMapping("/orders")
+public class OrderController {
+
+    @Autowired
+    private OrderRepository repo;
+
+    @Autowired
+    private OrderService service;
+
+    @PostMapping
+    public Order createOrder(@RequestBody Order order) {
+
+        // Validate product exists (call Product Service)
+        service.getProduct(order.getProductId());
+
+        return repo.save(order);
+    }
+}
