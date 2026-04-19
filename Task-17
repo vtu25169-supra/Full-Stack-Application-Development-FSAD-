@@ -1,0 +1,30 @@
+@Service
+public class OrderService {
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    private static final String PRODUCT_SERVICE_URL =
+            "http://product-service/products/";
+
+    // 🔁 Inter-service call with Circuit Breaker
+    @CircuitBreaker(name = "productService", fallbackMethod = "fallbackProduct")
+    public ProductDTO getProduct(Long productId) {
+
+        return restTemplate.getForObject(
+                PRODUCT_SERVICE_URL + productId,
+                ProductDTO.class
+        );
+    }
+
+    // 🛑 Fallback method
+    public ProductDTO fallbackProduct(Long productId, Exception ex) {
+
+        ProductDTO fallback = new ProductDTO();
+        fallback.setId(productId);
+        fallback.setName("Product not available");
+        fallback.setPrice(0.0);
+
+        return fallback;
+    }
+}
