@@ -1,0 +1,17 @@
+@Service
+public class OrderService {
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    public Product getProduct(Long productId) {
+
+        // ❌ OLD (hardcoded)
+        // http://localhost:8081/products/1
+
+        // ✅ NEW (service discovery)
+        String url = "http://product-service/products/" + productId;
+
+        return restTemplate.getForObject(url, Product.class);
+    }
+}
