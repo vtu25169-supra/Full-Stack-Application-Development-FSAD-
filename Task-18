@@ -1,0 +1,50 @@
+package com.example.orderservice;
+
+import com.example.orderservice.service.OrderService;
+import com.example.orderservice.dto.ProductDTO;
+import org.junit.jupiter.api.*;
+import org.mockito.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class OrderServiceTest {
+
+    @InjectMocks
+    private OrderService orderService;
+
+    @Mock
+    private RestTemplate restTemplate;
+
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void testGetProduct_Success() {
+
+        ProductDTO mockProduct = new ProductDTO();
+        mockProduct.setId(1L);
+        mockProduct.setName("Laptop");
+        mockProduct.setPrice(50000);
+
+        when(restTemplate.getForObject(anyString(), eq(ProductDTO.class)))
+                .thenReturn(mockProduct);
+
+        ProductDTO result = orderService.getProduct(1L);
+
+        assertEquals("Laptop", result.getName());
+    }
+
+    @Test
+    void testGetProduct_Fallback() {
+
+        when(restTemplate.getForObject(anyString(), eq(ProductDTO.class)))
+                .thenThrow(new RuntimeException());
+
+        ProductDTO result = orderService.fallbackProduct(1L, new Exception());
+
+        assertEquals("Product not available", result.getName());
+    }
+}
