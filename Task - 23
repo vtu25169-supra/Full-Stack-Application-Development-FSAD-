@@ -1,0 +1,28 @@
+package com.example.ai;
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@RestController
+@RequestMapping("/ai")
+public class PromptController {
+
+    @Autowired
+    AIService aiService;
+
+    @Autowired
+    EvaluationService evaluationService;
+
+    @PostMapping("/generate")
+    public String generate(@RequestParam String type) {
+
+        String prompt = PromptTemplates.getPrompt(type);
+
+        String response = aiService.generateCode(prompt);
+
+        String evaluation = evaluationService.evaluate(response);
+
+        return "Generated Output:\n" + response +
+               "\n\nEvaluation:\n" + evaluation;
+    }
+}
