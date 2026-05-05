@@ -1,0 +1,31 @@
+package com.example.cloud;
+
+import com.azure.storage.blob.*;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+
+@Service
+public class AzureService {
+
+    private final String CONNECTION_STRING = "your-connection-string";
+    private final String CONTAINER = "your-container";
+
+    public String uploadFile(String filePath) {
+
+        BlobServiceClient blobServiceClient =
+                new BlobServiceClientBuilder()
+                        .connectionString(CONNECTION_STRING)
+                        .buildClient();
+
+        BlobContainerClient containerClient =
+                blobServiceClient.getBlobContainerClient(CONTAINER);
+
+        BlobClient blobClient =
+                containerClient.getBlobClient("file-" + System.currentTimeMillis());
+
+        blobClient.uploadFromFile(filePath);
+
+        return "File uploaded to Azure Blob Storage";
+    }
+}
